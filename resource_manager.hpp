@@ -21,6 +21,7 @@ private:
 
     Shader loadShaderFromFile(const string& vShaderPath, const string& fShaderPath);
     string readShader(const string& path);
+    Texture2D loadTextureFromFile(const string& texturePath, bool alpha);
 
 public:
     static ResourceManager& instance() {
@@ -28,6 +29,7 @@ public:
         return INSTANCE;
     }
     Shader loadShader(const string& vShaderPath, const string& fShaderPath, const string& name);
+    Texture2D loadTexture(const string& texturePath, bool alpha, const string& name);
 };
 
 

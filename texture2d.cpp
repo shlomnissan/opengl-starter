@@ -27,3 +27,11 @@ void Texture2D::generate(unsigned int width, unsigned int height, unsigned char 
 void Texture2D::bind() const {
     glBindTexture(GL_TEXTURE_2D, this->ID);
 }
+
+void Texture2D::setInternalFormat(unsigned int internalFormat) {
+    Texture2D::internalFormat = internalFormat;
+}
+
+void Texture2D::setImageFormat(unsigned int imageFormat) {
+    Texture2D::imageFormat = imageFormat;
+}

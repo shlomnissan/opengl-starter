@@ -22,6 +22,9 @@ public:
     Texture2D();
     void generate(unsigned int width, unsigned int height, unsigned char* data);
     void bind() const;
+
+    void setInternalFormat(unsigned int internalFormat);
+    void setImageFormat(unsigned int imageFormat);
 };
 
 

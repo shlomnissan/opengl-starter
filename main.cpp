@@ -58,6 +58,8 @@ int main() {
     auto shader = rm.loadShader("vertex.glsl", "fragment.glsl", "default");
     shader.use();
 
+    auto text = rm.loadTexture("textures/text.png", true, "logo");
+
     while (!glfwWindowShouldClose(window))
     {
         glClear(GL_COLOR_BUFFER_BIT);
