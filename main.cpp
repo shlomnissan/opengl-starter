@@ -7,12 +7,6 @@
 
 #include "game.hpp"
 
-void error_callback() {
-
-}
-
-Game game(WINDOW_WIDTH, WINDOW_HEIGHT);
-
 int main() {
     GLFWwindow* window;
     if (!glfwInit()) { return 1; }
@@ -47,6 +41,7 @@ int main() {
         std::cerr << "OpenGL error: " << err << std::endl;
     }
 
+    Game game(WINDOW_WIDTH, WINDOW_HEIGHT);
     game.init();
 
     while (!glfwWindowShouldClose(window))
