@@ -74,4 +74,16 @@ Texture2D ResourceManager::loadTexture(const string &texturePath,
     return textures[name];
 }
 
+Shader ResourceManager::getShader(const string &name) {
+    return shaders[name];
+}
+
+Texture2D ResourceManager::getTexture(const string &name) {
+    return textures[name];
+}
+
+void ResourceManager::clear() {
+    // TODO: implement method
+}
+
 //endregion

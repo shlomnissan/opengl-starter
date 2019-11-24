@@ -15,7 +15,6 @@ using std::string;
 
 class ResourceManager {
 private:
-    ResourceManager(): shaders(), textures() {};
     std::unordered_map<std::string, Shader> shaders;
     std::unordered_map<std::string, Texture2D> textures;
 
@@ -24,12 +23,16 @@ private:
     Texture2D loadTextureFromFile(const string& texturePath, bool alpha);
 
 public:
+    ResourceManager(): shaders(), textures() {};
     static ResourceManager& instance() {
         static ResourceManager INSTANCE;
         return INSTANCE;
     }
     Shader loadShader(const string& vShaderPath, const string& fShaderPath, const string& name);
     Texture2D loadTexture(const string& texturePath, bool alpha, const string& name);
+    Shader getShader(const string& name);
+    Texture2D getTexture(const string& name);
+    void clear();
 };
 
 

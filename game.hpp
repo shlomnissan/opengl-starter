@@ -5,9 +5,11 @@
 #ifndef GAME_GAME_HPP
 #define GAME_GAME_HPP
 
-#include <GL/glew.h>
-#include <GLFW/glfw3.h>
 #include <array>
+#include <memory>
+
+#include "resource_manager.hpp"
+#include "sprite_renderer.hpp"
 
 enum GameState {
     GAME_ACTIVE,
@@ -18,8 +20,11 @@ enum GameState {
 class Game {
 private:
     GameState state;
-    GLboolean keys[1024];
-    GLuint width, height;
+    ResourceManager resourceManager;
+    SpriteRenderer renderer;
+
+    bool keys[1024];
+    unsigned int width, height;
 public:
     Game(GLuint width, GLuint height);
     ~Game();

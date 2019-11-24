@@ -2,27 +2,32 @@
 #include <GLFW/glfw3.h>
 #include <iostream>
 
-#include "resource_manager.hpp"
-#include "shader.hpp"
+#define WINDOW_WIDTH    640
+#define WINDOW_HEIGHT   480
 
-void error_callback(int error, const char* description) {
-    fprintf(stderr, "Error: %s\n", description);
+#include "game.hpp"
+
+void error_callback() {
+
 }
+
+Game game(WINDOW_WIDTH, WINDOW_HEIGHT);
 
 int main() {
     GLFWwindow* window;
-    if (!glfwInit()) {
-        return 1;
-    }
+    if (!glfwInit()) { return 1; }
 
-    glfwSetErrorCallback(error_callback);
+    glfwSetErrorCallback([](int error, const char* description) {
+        std::cerr << "Error: " << description << '\n';
+    });
 
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
     glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
     glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, true);
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
+    glfwWindowHint(GLFW_RESIZABLE, GL_FALSE);
 
-    window = glfwCreateWindow(640, 480, "Simple example", nullptr, nullptr);
+    window = glfwCreateWindow(WINDOW_WIDTH, WINDOW_HEIGHT, "OpenGL game starter", nullptr, nullptr);
     if (!window) {
         glfwTerminate();
         return 1;
@@ -32,42 +37,27 @@ int main() {
 
     std::cout << "OpenGL version: " << glGetString(GL_VERSION) << std::endl;
 
-    GLuint vaoId = 0;
-    glGenVertexArrays(1, &vaoId);
-    glBindVertexArray(vaoId);
-
-    float positions[6] = {
-            -0.5f, -0.5f,
-             0.0f,  0.5f,
-             0.5f, -0.5f
-    };
-
-    unsigned int buffer;
-    glGenBuffers(1, &buffer);
-    glBindBuffer(GL_ARRAY_BUFFER, buffer);
-    glBufferData(GL_ARRAY_BUFFER, 6 * sizeof(float), positions, GL_STATIC_DRAW);
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), nullptr);
+    glViewport(0, 0, WINDOW_WIDTH, WINDOW_HEIGHT);
+    glEnable(GL_CULL_FACE);
+    glEnable(GL_BLEND);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     GLenum err;
     while ((err = glGetError()) != GL_NO_ERROR) {
         std::cerr << "OpenGL error: " << err << std::endl;
     }
 
-    auto rm = ResourceManager::instance();
-    auto shader = rm.loadShader("vertex.glsl", "fragment.glsl", "default");
-    shader.use();
-
-    auto text = rm.loadTexture("textures/text.png", true, "logo");
+    game.init();
 
     while (!glfwWindowShouldClose(window))
     {
-        glClear(GL_COLOR_BUFFER_BIT);
+        glfwPollEvents();
 
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+        game.render();
 
         glfwSwapBuffers(window);
-        glfwPollEvents();
     }
 
     glfwDestroyWindow(window);
